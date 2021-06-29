@@ -80,28 +80,45 @@ app.post("/empleados/update", function (request, response) {
         let parametros = [email, address, id];
         connection.query(query3, parametros, function (error, result) {
             if (error) {
-                console.log(error);
+                response.json({ status: 'error', message: error.message})
             } else {
-                response.json(result);
+                response.json({ status: 'ok', message: 'Employee updated'})
             }
         });
     }else if(email !== '' && address === ''){
         let parametros = [email, id];
         connection.query(query1, parametros, function (error, result) {
             if (error) {
-                console.log(error);
+                response.json({ status: 'error', message: error.message})
             } else {
-                response.json(result);
+                response.json({ status: 'ok', message: 'Employee updated'})
             }
         });
     }else if(email === '' && address !== ''){
         let parametros = [address, id];
         connection.query(query2, parametros, function (error, result) {
             if (error) {
-                console.log(error);
+                response.json({ status: 'error', message: error.message})
             } else {
-                response.json(result);
+                response.json({ status: 'ok', message: 'Employee updated'})
             }
         });
     }
+});
+
+//P5
+app.get("/productos/get", function (request, response) {
+    let page = request.query.page;
+    let size = 10;
+    let pagequery = size * page - size;
+    var query = "select ProductID, ProductName, UnitPrice, UnitsInStock from products p limit ?, ?";
+    let parametros = [pagequery, size];
+
+    connection.query(query, parametros, function (error, result) {
+        if (error) {
+            console.log(error);
+        }else{
+            response.json(result);
+        }
+    });
 });
