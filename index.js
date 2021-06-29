@@ -42,6 +42,23 @@ app.get("/empleados/get",function (request, response) {
     });
 });
 
+//P2
+app.get("/empleados/getManagerEmployees/:id",function (request,response) {
+    var id = request.params.id;
+    var query = "select e.EmployeeID, e.LastName, e.FirstName, e.Title\n" +
+        "from employees e\n" +
+        "inner join employees j on (e.ReportsTo=j.EmployeeID)\n" +
+        "where j.EmployeeID = ?";
+    connection.query(query,[id],function (error,result) {
+        if(error){
+            console.log(error);
+        }else{
+            response.json(result);
+        }
+    });
+});
+
+
 
 
 
